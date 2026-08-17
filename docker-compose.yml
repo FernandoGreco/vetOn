@@ -1,28 +1,35 @@
 services:
   db:
     image: postgres:15
+    container_name: veton-db-1
     environment:
-      POSTGRES_DB: vetconnect
       POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: suasenha
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: veton
     ports:
       - "5432:5432"
     volumes:
+      - veton_postgres_data:/var/lib/postgresql/data
       - ./banco:/docker-entrypoint-initdb.d
 
   backend:
-    image: node:18-alpine
+    build: ./backend
+    container_name: veton-backend-1
     working_dir: /app
     volumes:
       - ./backend:/app
-    command: sh -c "npm install && node server.js"
-    environment:
-      DB_HOST: db
-      DB_USER: postgres
-      DB_PASSWORD: suasenha
-      DB_NAME: vetconnect
-      PORT: 3000
     ports:
       - "3000:3000"
+    environment:
+      - DB_HOST=db
+      - DB_USER=postgres
+      - DB_PASSWORD=postgres
+      - DB_NAME=veton
+      - DB_PORT=5432
+      - PORT=3000
+    command: sh -c "npm install && node server.js"
     depends_on:
       - db
+
+volumes:
+  veton_postgres_data:

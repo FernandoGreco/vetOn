@@ -13,8 +13,8 @@
     <script>
         async function carregarUsuarios() {
             try {
-                // Requisição feita para o servidor Node.js
-                const resposta = await fetch('http://localhost:3000/usuarios');
+                // Rota relativa apontando para o servidor Node.js
+                const resposta = await fetch('/usuarios');
                 const usuarios = await resposta.json();
 
                 const lista = document.getElementById('lista-usuarios');
@@ -22,7 +22,6 @@
 
                 usuarios.forEach(usuario => {
                     const item = document.createElement('li');
-                    // Mapeando as colunas reais do banco de dados
                     const nomeOuEmail = usuario.nm_usuario || usuario.ds_email_usuario || usuario.nome;
                     const id = usuario.id_usuario || usuario.id || '';
 
