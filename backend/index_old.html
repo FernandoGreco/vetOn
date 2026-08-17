@@ -1,0 +1,40 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+
+<head>
+    <meta charset="UTF-8">
+    <title>VetOn - Lista de Usuários</title>
+</head>
+
+<body>
+    <h1>Usuários Cadastrados</h1>
+    <ul id="lista-usuarios"></ul>
+
+    <script>
+        async function carregarUsuarios() {
+            try {
+                // Rota relativa apontando para o servidor Node.js
+                const resposta = await fetch('/usuarios');
+                const usuarios = await resposta.json();
+
+                const lista = document.getElementById('lista-usuarios');
+                lista.innerHTML = '';
+
+                usuarios.forEach(usuario => {
+                    const item = document.createElement('li');
+                    const nomeOuEmail = usuario.nm_usuario || usuario.ds_email_usuario || usuario.nome;
+                    const id = usuario.id_usuario || usuario.id || '';
+
+                    item.textContent = `${id} - ${nomeOuEmail}`;
+                    lista.appendChild(item);
+                });
+            } catch (erro) {
+                console.error('Erro ao carregar usuários:', erro);
+            }
+        }
+
+        carregarUsuarios();
+    </script>
+</body>
+
+</html>

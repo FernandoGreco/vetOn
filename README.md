@@ -1,41 +1,73 @@
-# VetConnect — Código Fonte Completo
-Data: 21/07/2026 02:31
+# 🐾 VetConnect
 
-## Estrutura
+Plataforma Web para conexão entre tutores de pets e prestadores de serviços veterinários/estéticos. O sistema roda em arquitetura containerizada com **Node.js + Express** e **PostgreSQL**.
+
+---
+
+## 🛠️ Pré-requisitos
+
+Antes de iniciar, certifique-se de ter instalado em sua máquina:
+* **[Docker Desktop](https://www.docker.com/products/docker-desktop/)** (Windows/macOS) ou **Docker + Docker Compose** (Linux)
+* **[Git](https://git-scm.com/)**
+
+---
+
+## 🚀 Passo a Passo para Rodar o Projeto
+
+### 1. Clonar o Repositório
+Abra o terminal e execute:
+```bash
+git clone https://github.com/FernandoGreco/vetOn.git
+cd vetconnect
 ```
-vetconnect_completo/
-├── app/
-│   └── index.html          → Aplicação completa (28 telas, 114 funções)
-└── banco/
-    ├── 01_vetconnect_FINAL.sql          → Schema completo do banco (39 tabelas)
-    ├── 02_vetconnect_RLS.sql            → Row Level Security - parte 1
-    ├── 03_vetconnect_RLS_complemento.sql → Row Level Security - parte 2
-    ├── 04_vetconnect_RLS_fix.sql        → Fix funções helper (auth_uid)
-    └── 05_criar_usuarios_teste.sql      → Usuários de teste
+
+### 2. Subir os Containers
+Na **pasta raiz** do projeto (onde está o arquivo `docker-compose.yml`), rode:
+```bash
+docker-compose up --build -d
 ```
+> *Este comando baixa o PostgreSQL, cria o banco, executa os scripts SQL iniciais de criação de tabelas e sobe a API em Node.js.*
 
-## Como usar
+---
 
-### App
-- Abra `app/index.html` no browser
-- Ou suba no Vercel: vercel.com/new/drop
+## 🔗 Links de Acesso
 
-### Banco (Supabase)
-Execute os SQLs na ordem numérica no Supabase SQL Editor:
-1. `01_vetconnect_FINAL.sql` → Cria todas as tabelas
-2. `02_vetconnect_RLS.sql` → Aplica segurança RLS
-3. `03_vetconnect_RLS_complemento.sql` → Complemento RLS
-4. `04_vetconnect_RLS_fix.sql` → Vincula auth_uid
-5. `05_criar_usuarios_teste.sql` → Cria usuários de teste
+Após os containers subirem, acesse no navegador:
 
-## Credenciais de teste
-| Email | Senha | Tipo |
-|-------|-------|------|
-| admin@vetconnect.com | Admin@2024! | Administrador |
-| cliente1@vetconnect.com | Cliente@2024! | Tutor |
-| vet@vetconnect.com | Prest@2024! | Prestador |
+* **Aplicação Web:** [http://localhost:3000](http://localhost:3000)
+* **Documentação Swagger (API):** [http://localhost:3000/docs](http://localhost:3000/docs)
+* **Banco de Dados (PostgreSQL):** `localhost:5432`  
+  * **Usuário:** `postgres`  
+  * **Senha:** `postgres`  
+  * **Banco:** `veton`
 
-## Infraestrutura
-- Supabase: sgbiijwykhikdbeuvval.supabase.co
-- Vercel: vetconnect-mu.vercel.app
-- GitHub: github.com/brsouqu-dev/vetconnect
+---
+
+## 🔐 Contas de Teste
+
+| Nome | E-mail | Senha | Perfil |
+|------|--------|-------|--------|
+| **Maria Silva** | `cliente1@vetconnect.com` | `123456` | Tutor |
+| **Dr. Carlos Silva** | `vet@vetconnect.com` | `123456` | Prestador |
+| **Admin VetConnect** | `admin@vetconnect.com` | `123456` | Administrador |
+
+---
+
+## 🛠️ Comandos Úteis
+
+* **Ver logs do backend em tempo real:**
+  ```bash
+  docker-compose logs -f backend
+  ```
+* **Reiniciar o backend após alterar o `server.js`:**
+  ```bash
+  docker-compose restart backend
+  ```
+* **Parar todos os containers:**
+  ```bash
+  docker-compose down
+  ```
+* **Resetar o banco de dados do zero:**
+  ```bash
+  docker-compose down -v
+  docker-compose up --build -d
