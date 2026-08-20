@@ -56,6 +56,9 @@ app.get('/ping', (req, res) => {
   res.send('pong');
 });
 
+// Serve os arquivos estáticos (index.html, style.css, etc.) direto da pasta local do backend
+app.use(express.static(__dirname));
+
 // Servir o arquivo index.html na raiz
 app.get('/', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
@@ -102,7 +105,20 @@ app.post('/api/usuarios/login', async (req, res) => {
 
     // Trata o perfil do usuário (ex: id_tipo_usuario = 3 é prestador)
     const user = result.rows[0];
-    user.role = user.role === 3 ? 'prestador' : 'tutor';
+
+    switch (user.id) {
+      case 1:
+        user.role = 'administrador'
+        break;
+      case 2:
+        user.role = 'tutor'
+        break;
+      case 3:
+       user.role = 'prestador'
+        break;
+      default:
+       user.role = 'sem perfil'
+    }
     user.avatar = user.nome.substring(0, 2).toUpperCase();
 
     return res.json({ success: true, user });
